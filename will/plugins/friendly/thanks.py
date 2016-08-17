@@ -8,6 +8,6 @@ class ThanksPlugin(WillPlugin):
     def respond_to_thanks(self, message):
         self.reply(message, "You're welcome!")
 
-    @hear("(thanks|thank you|tx|thx|ty|tyvm),? (will|william)")
+    @hear("(thanks|thank you|tx|thx|ty|tyvm),? (fitbot|fit bot)")
     def hear_thanks(self, message):
         self.say("You're welcome!", message=message)

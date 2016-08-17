@@ -3,6 +3,7 @@ from utils import show_valid, warn, note
 from clint.textui import puts, indent
 from urlparse import urlparse
 
+SECRET_KEY = '5$y8kjxf3ioqw)!c=v78u2s0^qje5c4v!r#eq1ju8#*kc2uoed'
 
 def import_settings(quiet=True):
     """This method takes care of importing settings from the environment, and config.py file.
@@ -82,7 +83,7 @@ def import_settings(quiet=True):
             else:
                 if not quiet:
                     warn("no HTTPSERVER_PORT found in the environment or config.  Defaulting to ':80'.")
-                settings["HTTPSERVER_PORT"] = "80"
+                settings["HTTPSERVER_PORT"] = "8000"
 
         if "STORAGE_BACKEND" not in settings:
             settings["STORAGE_BACKEND"] = "redis"
@@ -181,5 +182,6 @@ def import_settings(quiet=True):
             if not quiet:
                 show_valid(k)
             globals()[k] = settings[k]
+
 
 import_settings()

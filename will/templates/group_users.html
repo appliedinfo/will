@@ -1,0 +1,19 @@
+<p><b>Group Users are as under:</b></p>
+<table>
+    <thead>
+    <tr>
+        <td><b>ID</b></td>
+        <td><b>Username</b></td>
+        <td><b>Email</b></td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in userlist %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

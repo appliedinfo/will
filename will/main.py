@@ -9,18 +9,20 @@ import re
 import sys
 import time
 import traceback
-from clint.textui import colored, puts, indent
 from os.path import abspath, dirname
 from multiprocessing import Process, Queue
 
+from clint.textui import colored, puts, indent
 import bottle
 
 from listener import WillXMPPClientMixin
-from mixins import ScheduleMixin, StorageMixin, ErrorMixin, HipChatMixin,\
+from mixins import ScheduleMixin, StorageMixin, ErrorMixin, HipChatMixin, \
     RoomMixin, PluginModulesLibraryMixin, EmailMixin
 from scheduler import Scheduler
 import settings
 from utils import show_valid, error, warn, print_head
+
+
 
 
 # Force UTF8
@@ -42,7 +44,6 @@ sys.path.append(os.path.join(PROJECT_ROOT, "will"))
 
 class WillBot(EmailMixin, WillXMPPClientMixin, StorageMixin, ScheduleMixin,
               ErrorMixin, RoomMixin, HipChatMixin, PluginModulesLibraryMixin):
-
     def __init__(self, **kwargs):
         if "template_dirs" in kwargs:
             warn("template_dirs is now depreciated")
@@ -92,7 +93,7 @@ class WillBot(EmailMixin, WillXMPPClientMixin, StorageMixin, ScheduleMixin,
         self.plugins_dirs = dict(zip(self.plugins_dirs.values(), self.plugins_dirs.keys()))
 
         # Storing here because storage hasn't been bootstrapped yet.
-        os.environ["WILL_TEMPLATE_DIRS_PICKLED"] =\
+        os.environ["WILL_TEMPLATE_DIRS_PICKLED"] = \
             ";;".join(full_path_template_dirs)
 
     def bootstrap(self):
@@ -139,13 +140,13 @@ class WillBot(EmailMixin, WillXMPPClientMixin, StorageMixin, ScheduleMixin,
                 scheduler_thread.terminate()
                 bottle_thread.terminate()
                 xmpp_thread.terminate()
-                print '\n\nReceived keyboard interrupt, quitting threads.',
+                print('\n\nReceived keyboard interrupt, quitting threads.')
                 while (scheduler_thread.is_alive() or
-                       bottle_thread.is_alive() or
-                       xmpp_thread.is_alive()):
-                        sys.stdout.write(".")
-                        sys.stdout.flush()
-                        time.sleep(0.5)
+                           bottle_thread.is_alive() or
+                           xmpp_thread.is_alive()):
+                    sys.stdout.write(".")
+                    sys.stdout.flush()
+                    time.sleep(0.5)
 
     def verify_individual_setting(self, test_setting, quiet=False):
         if not test_setting.get("only_if", True):
@@ -277,9 +278,9 @@ To set your %(name)s:
             for name, meta in self.required_settings_from_plugins.items():
                 if not hasattr(settings, name):
                     error_message = (
-                        "%(setting_name)s is missing. It's required by the"
-                        "%(plugin_name)s plugin's '%(function_name)s' method."
-                    ) % meta
+                                        "%(setting_name)s is missing. It's required by the"
+                                        "%(plugin_name)s plugin's '%(function_name)s' method."
+                                    ) % meta
                     puts(colored.red("✗ %(setting_name)s" % meta))
                     missing_setting_error_messages.append(error_message)
                     missing_settings = True
@@ -504,8 +505,8 @@ To set your %(name)s:
                         else:
                             plugin_instances = {}
                             for function_name, fn in inspect.getmembers(
-                                plugin_info["class"],
-                                predicate=inspect.ismethod
+                                    plugin_info["class"],
+                                    predicate=inspect.ismethod
                             ):
                                 try:
                                     # Check for required_settings
@@ -520,9 +521,9 @@ To set your %(name)s:
                                                         "setting_name": s,
                                                     }
                                             if (
-                                                "listens_to_messages" in meta and
-                                                meta["listens_to_messages"] and
-                                                "listener_regex" in meta
+                                                                "listens_to_messages" in meta and
+                                                            meta["listens_to_messages"] and
+                                                            "listener_regex" in meta
                                             ):
                                                 # puts("- %s" % function_name)
                                                 regex = meta["listener_regex"]

@@ -12,7 +12,7 @@ class ItsLovePlugin(WillPlugin):
     def hear_love_direct(self, message):
         self.say("I love you, too.", message=message)
 
-    @hear("will is awesome")
+    @hear("fit bot is awesome")
     def hear_i_am_awesome(self, message):
         self.say("Aww, thanks!", message=message)
 

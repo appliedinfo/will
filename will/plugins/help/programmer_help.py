@@ -13,3 +13,7 @@ class ProgrammerHelpPlugin(WillPlugin):
             help_text += "\n%s" % r
 
         self.say(help_text, message=message)
+
+    @periodic(minute='1')
+    def standup(self):
+        self.say("hi hello ")

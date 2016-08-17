@@ -54,6 +54,7 @@ PLUGINS = [
     "will.plugins.help",
     "will.plugins.productivity",
     "will.plugins.web",
+    "will.plugins.fitbot",
 
     # All plugins in your project.
     "plugins",
@@ -66,6 +67,7 @@ PLUGIN_BLACKLIST = [
     "will.plugins.productivity.bitly",   # Because it requires a BITLY_ACCESS_TOKEN key and the bitly_api library
     "will.plugins.devops.bitbucket_is_up",   # Because most folks use github.
     "will.plugins.devops.pagerduty",  # Because it requires a PAGERDUTY_SUBDOMAIN and PAGERDUTY_API_KEY key
+    "will.plugins.devops.github_is_up",
 ]
 
 # ------------------------------------------------------------------------------------
@@ -75,6 +77,8 @@ PLUGIN_BLACKLIST = [
 # If will isn't accessible at localhost, you must set this for his keepalive to work.
 # Note no trailing slash.
 # PUBLIC_URL = "http://my-will.herokuapp.com"
+PUBLIC_URL = "http://localhost:9000"
+HTTPSERVER_PORT = "9000"
 
 # Port to bind the web server to (defaults to $PORT, then 80.)
 # Set > 1024 to run without elevated permission.
@@ -91,7 +95,7 @@ PLUGIN_BLACKLIST = [
 
 # The room will will talk to if the trigger is a webhook and he isn't told a specific room.
 # Default is the first of ROOMS.
-# DEFAULT_ROOM = 'Testing, Will Kahuna'
+DEFAULT_ROOM = 'AW'
 
 
 # Fully-qualified folders to look for templates in, beyond the two that
@@ -134,11 +138,11 @@ PLUGIN_BLACKLIST = [
 
 
 # Logging level
-# LOGLEVEL = "DEBUG"
+LOGLEVEL = "DEBUG"
 
 # Proxy settings
 # Use proxy to access hipchat servers
 # Make sure your proxy allows CONNECT method to port 5222
 # PROXY_URL = "http://user:pass@corpproxy.example.com:3128"
 # or
-# PROXY_URL = "http://myproxy:80
+# PROXY_URL = "http://yproxy:80

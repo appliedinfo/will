@@ -26,6 +26,7 @@ class WillPlugin(EmailMixin, StorageMixin, NaturalTimeMixin, RoomMixin, RosterMi
         return rooms
 
     def _prepared_content(self, content, message, kwargs):
+        print(content,'********<<<<<<>>>>>>>>>>>>>>>>>>')
         if kwargs is None:
             kwargs = {}
 

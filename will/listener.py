@@ -51,7 +51,6 @@ class WillXMPPClientMixin(ClientXMPP, RosterMixin, RoomMixin, HipChatMixin):
 
         if settings.ALLOW_INSECURE_HIPCHAT_SERVER is True:
             self.add_event_handler('ssl_invalid_cert', lambda cert: True)
-
         self.add_event_handler("roster_update", self.join_rooms)
         self.add_event_handler("session_start", self.session_start)
         self.add_event_handler("message", self.message_recieved)

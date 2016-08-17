@@ -1,7 +1,8 @@
 import json
 import logging
-import requests
 import traceback
+
+import requests
 
 from will import settings
 
@@ -14,7 +15,6 @@ ALL_USERS_URL = "https://%(server)s/v2/user?auth_token=%(token)s&start-index=%(s
 
 
 class HipChatMixin(object):
-
     def send_direct_message(self, user_id, message_body, html=False, notify=False, **kwargs):
         if kwargs:
             logging.warn("Unknown keyword args for send_direct_message: %s" % kwargs)
@@ -27,7 +27,7 @@ class HipChatMixin(object):
             # https://www.hipchat.com/docs/apiv2/method/private_message_user
             url = PRIVATE_MESSAGE_URL % {"server": settings.HIPCHAT_SERVER,
                                          "user_id": user_id,
-                                         "token": settings.V2_TOKEN}
+                                         "token": settings.V2_TOKEN_MESSAGE}
             data = {
                 "message": message_body,
                 "message_format": format,
@@ -47,16 +47,18 @@ class HipChatMixin(object):
     def send_room_message(self, room_id, message_body, html=False, color="green", notify=False, **kwargs):
         if kwargs:
             logging.warn("Unknown keyword args for send_room_message: %s" % kwargs)
-
         format = "text"
         if html:
             format = "html"
-
+        # card = kwargs.get('card', None)
+        # if card:
+        #     message_body="this is a test"
         try:
             # https://www.hipchat.com/docs/apiv2/method/send_room_notification
             url = ROOM_NOTIFICATION_URL % {"server": settings.HIPCHAT_SERVER,
                                            "room_id": room_id,
-                                           "token": settings.V2_TOKEN}
+                                           "token": settings.V2_TOKEN_ROOM_MESSAGE}
+            print(">>>" * 10, url)
             data = {
                 "message": message_body,
                 "message_format": format,
@@ -64,6 +66,7 @@ class HipChatMixin(object):
                 "notify": notify,
             }
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            print(">>>"*10,data)
             requests.post(url, headers=headers, data=json.dumps(data), **settings.REQUESTS_OPTIONS)
         except:
             logging.critical("Error in send_room_message: \n%s" % traceback.format_exc())
