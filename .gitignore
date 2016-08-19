@@ -42,3 +42,4 @@ docs/.DS_Store
 # VIM swap files
 .*.sw[a-z]
 dump.rdb
+local_settings.py

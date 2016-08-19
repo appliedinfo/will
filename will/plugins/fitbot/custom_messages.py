@@ -100,12 +100,14 @@ class Fitbot(WillPlugin):
         response = requests.get(
             settings.FIT_BOT_URL + 'get_group_user/?username={0}'.format(user_name))
         data = response.json()
-        username = data.get('username', '')
-        id = data.get('id', '')
-        email = data.get('email', '')
-        context = {"username": username,
-                   "id": id,
-                   "email": email,
+        calories = data.get('calories', '')
+        steps = data.get('steps', '')
+        weight = data.get('weight', '')
+        sleep = data.get('sleep','')
+        context = {"calories": calories,
+                   "steps": steps,
+                   "weight": weight,
+                   "sleep":sleep
                    }
         self.say(rendered_template("group_user.html", context), message, html=True)
 
