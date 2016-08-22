@@ -7,7 +7,9 @@ from utils import show_valid, warn, note
 
 SECRET_KEY = '5$y8kjxf3ioqw)!c=v78u2s0^qje5c4v!r#eq1ju8#*kc2uoed'
 
-FIT_BOT_URL="https://fitbot.ainfo.io/"
+FIT_BOT_URL = "https://fitbot.ainfo.io/"
+
+
 def import_settings(quiet=True):
     """This method takes care of importing settings from the environment, and config.py file.
 
@@ -186,6 +188,7 @@ def import_settings(quiet=True):
             globals()[k] = settings[k]
 
 
+FITBOT_GROUP = '5'
 import_settings()
 try:
     from local_settings import *

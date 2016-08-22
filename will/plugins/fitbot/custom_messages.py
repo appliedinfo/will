@@ -57,7 +57,7 @@ class Fitbot(WillPlugin):
     @respond_to("group stats")
     def group_stats(self, message):
         response = requests.get(
-            settings.FIT_BOT_URL + 'get_stats_group/1/')
+            settings.FIT_BOT_URL + 'get_stats_group/'+str(settings.FITBOT_GROUP)+'/')
         data = response.json()
         calories = data.get('calories', '')
         steps = data.get('steps', '')
