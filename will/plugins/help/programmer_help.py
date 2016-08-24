@@ -14,10 +14,10 @@ class ProgrammerHelpPlugin(WillPlugin):
 
         self.say(help_text, message=message)
 
-    @periodic(minute='1')
-    def standup(self):
-        self.say("hi hello this is periodic testing in help plugin for 1 min ")
-
-    @periodic(minute='30')
-    def standup(self):
-        self.say("hi hello this is  periodic testing in help plugin for 30 min ")
+    # @periodic(minute='1')
+    # def standup(self):
+    #     self.say("hi hello this is periodic testing in help plugin for 1 min ")
+    #
+    # @periodic(minute='30')
+    # def standup(self):
+    #     self.say("hi hello this is  periodic testing in help plugin for 30 min ")
