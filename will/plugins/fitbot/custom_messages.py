@@ -47,40 +47,45 @@ class CustomPluginBot(WillPlugin):
 
         self.say(activity_text, message=message)
 
-    @periodic(hour='12', minute='55', day_of_week="mon-fri")
+    @periodic(hour='5', minute='30', day_of_week="mon-fri")
     def schedule_message(self):
-        response = requests.get(settings.FIT_BOT_URL + 'get_stats_group/1/')
-        self.say("@owais " + str(response.json()), notify=True, color='red')
+        context = group_stats()
+        self.say("@all Group Stats 5:30", notify=True, color='green')
+        self.say(rendered_template("group_stats.html", context), notify=True,
+             color='green', html=True)
+
+
+    @periodic(hour='14', minute='00', day_of_week="mon-fri")
+    def schedule_message(self):
+        context = group_stats()
+        self.say("@all Group Stats 14:00", notify=True, color='green')
+        self.say(rendered_template("group_stats.html", context), notify=True,
+                 color='green', html=True)
+
+
+    @periodic(hour='6', minute='00', day_of_week="mon-fri")
+    def schedule_message(self):
+        context = group_stats()
+        self.say("@all Group Stats 6:00", notify=True, color='green')
+        self.say(rendered_template("group_stats.html", context), notify=True,
+                 color='green', html=True)
+
+
+    @periodic(hour='12', minute='50', day_of_week="mon-fri")
+    def schedule_message(self):
+        context = group_stats()
+        self.say("@all Group Stats 12:56", notify=True, color='green')
+        self.say(rendered_template("group_stats.html", context), notify=True,
+                 color='green', html=True)
 
 
 class Fitbot(WillPlugin):
     @respond_to("group stats")
     def group_stats(self, message):
-        response = requests.get(
-            settings.FIT_BOT_URL + 'get_stats_group/'+str(settings.FITBOT_GROUP)+'/')
-        data = response.json()
-        calories = data.get('calories', '')
-        steps = data.get('steps', '')
-        weight = data.get('weight', '')
-        sleep = data.get('sleep', '')
-        context = {"calories": calories,
-                   "steps": steps,
-                   "weight": weight,
-                   "sleep": sleep}
-
-        # card_data = {"style": "application", "url": "https://www.application.com/an-object", "format": "medium",
-        #              "id": "db797a68-0aff-4ae8-83fc-2e72dbb1a707", "title": "GroupStatistics",
-        #              "description": "GroupstaticsbasesontotalSleep\ntotalcalories",
-        #              "icon": {"url": "http://bit.ly/1S9Z5dF"},
-        #              "attributes": [{"label": "calories", "value": {"label": calories}}, {"label": "steps", "value": {
-        #                  "icon": {"url": "http://bit.ly/1S9Z5dF"}, "label": steps, "style": "lozenge-complete"}},
-        #                             {"label": "Avgweight",
-        #                              "value": {"icon": {"url": "http://bit.ly/1S9Z5dF"}, "label": weight,
-        #                                        "style": "lozenge-complete"}}, {"label": "sleep", "value": {
-        #                      "icon": {"url": "http://bit.ly/1S9Z5dF"}, "label": sleep, "style": "lozenge-complete"}}]}
-        # self.say(message, html=True, card=json.dumps(card_data), notify=True)
-        # self.say(html_body, notify=True, html=True, color='random')
-        self.say(rendered_template("group_stats.html", context), message, html=True)
+        context = group_stats()
+        self.say("@all Group Stats", notify=True, color='green')
+        self.say(rendered_template("group_stats.html", context), notify=True,
+                 color='green', html=True)
 
     @respond_to("group users")
     def group_users(self, message):
@@ -103,11 +108,11 @@ class Fitbot(WillPlugin):
         calories = data.get('calories', '')
         steps = data.get('steps', '')
         weight = data.get('weight', '')
-        sleep = data.get('sleep','')
+        sleep = data.get('sleep', '')
         context = {"calories": calories,
                    "steps": steps,
                    "weight": weight,
-                   "sleep":sleep
+                   "sleep": sleep
                    }
         self.say(rendered_template("group_user.html", context), message, html=True)
 
@@ -121,3 +126,18 @@ class Fitbot(WillPlugin):
         self.send_email(from_email='fitbot@ai.info.au', email_list=[email],
                         subject="Here's the latest report from Fitbot",
                         message=rendered_template("group_users.html", context))
+
+
+def group_stats():
+    url = settings.FIT_BOT_URL + 'get_stats_group/' + str(settings.FITBOT_GROUP) + '/'
+    response = requests.get(url=url)
+    data = response.json()
+    calories = data.get('calories', '')
+    steps = data.get('steps', '')
+    weight = data.get('weight', '')
+    sleep = data.get('sleep', '')
+    context = {"calories": calories,
+               "steps": steps,
+               "weight": weight,
+               "sleep": sleep}
+    return context
