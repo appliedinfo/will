@@ -48,15 +48,15 @@ class CustomPluginBot(WillPlugin):
         self.say(activity_text, message=message)
 
     @periodic(hour='5', minute='30', day_of_week="mon-fri")
-    def schedule_message(self):
+    def schedule_530_message(self):
         context = group_stats()
-        self.say("@all Group Stats 5:30", notify=True, color='green')
+        self.say("@all Group Stats 5:30 local", notify=True, color='green')
         self.say(rendered_template("group_stats.html", context), notify=True,
              color='green', html=True)
 
 
     @periodic(hour='14', minute='00', day_of_week="mon-fri")
-    def schedule_message(self):
+    def schedule_1400_message(self):
         context = group_stats()
         self.say("@all Group Stats 14:00", notify=True, color='green')
         self.say(rendered_template("group_stats.html", context), notify=True,
@@ -64,17 +64,24 @@ class CustomPluginBot(WillPlugin):
 
 
     @periodic(hour='6', minute='00', day_of_week="mon-fri")
-    def schedule_message(self):
+    def schedule_600_message(self):
         context = group_stats()
         self.say("@all Group Stats 6:00", notify=True, color='green')
         self.say(rendered_template("group_stats.html", context), notify=True,
                  color='green', html=True)
 
 
-    @periodic(hour='12', minute='50', day_of_week="mon-fri")
-    def schedule_message(self):
+    @periodic(hour='12', minute='56', day_of_week="mon-fri")
+    def schedule_1256_message(self):
         context = group_stats()
         self.say("@all Group Stats 12:56", notify=True, color='green')
+        self.say(rendered_template("group_stats.html", context), notify=True,
+                 color='green', html=True)
+
+    @periodic(hour='9', minute='45', day_of_week="mon-fri")
+    def schedule_945_message(self):
+        context = group_stats()
+        self.say("@all Group Stats 9:45", notify=True, color='green')
         self.say(rendered_template("group_stats.html", context), notify=True,
                  color='green', html=True)
 
