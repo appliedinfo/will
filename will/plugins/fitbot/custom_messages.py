@@ -47,8 +47,8 @@ class CustomPluginBot(WillPlugin):
 
         self.say(activity_text, message=message)
 
-    @periodic(hour='1', minute='00')
-    def schedule_530_message(self):
+    @periodic(hour='13', minute='00')
+    def schedule_1300_message(self):
         context = group_stats()
         self.say("@all Group Stats", notify=True, color='green')
         self.say(rendered_template("group_stats.html", context), notify=True,
