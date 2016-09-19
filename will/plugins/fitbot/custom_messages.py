@@ -115,11 +115,11 @@ class Fitbot(WillPlugin):
         weight = data.get('weight', '0.00')
         sleep = data.get('sleep', '0.00')
         try:
-            calories = int(calories)
-            steps = int(steps)
-            weight = int(weight)
-            sleep = int(sleep)
-        except:
+            calories = int(float(calories))
+            steps = int(float(steps))
+            weight = int(float(weight))
+            sleep = int(float(sleep))
+        except Exception as e:
             pass
         context = {"calories": calories,
                    "steps": steps,
@@ -149,11 +149,11 @@ def group_stats():
     weight = data.get('weight', '0.00')
     sleep = data.get('sleep', '0.00')
     try:
-        calories = int(calories)
-        steps = int(steps)
-        weight = int(weight)
-        sleep = int(sleep)
-    except:
+        calories = int(float(calories))
+        steps = int(float(steps))
+        weight = int(float(weight))
+        sleep = int(float(sleep))
+    except Exception as e:
         pass
     context = {"calories": calories,
                "steps": steps,
