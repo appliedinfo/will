@@ -110,10 +110,17 @@ class Fitbot(WillPlugin):
         response = requests.get(
             settings.FIT_BOT_URL + 'get_group_user/?username={0}'.format(user_name))
         data = response.json()
-        calories = data.get('calories', '')
-        steps = data.get('steps', '')
-        weight = data.get('weight', '')
-        sleep = data.get('sleep', '')
+        calories = data.get('calories', '0.00')
+        steps = data.get('steps', '0.00')
+        weight = data.get('weight', '0.00')
+        sleep = data.get('sleep', '0.00')
+        try:
+            calories = int(calories)
+            steps = int(steps)
+            weight = int(weight)
+            sleep = int(sleep)
+        except:
+            pass
         context = {"calories": calories,
                    "steps": steps,
                    "weight": weight,
@@ -137,10 +144,17 @@ def group_stats():
     url = settings.FIT_BOT_URL + 'get_stats_group/' + str(settings.FITBOT_GROUP) + '/'
     response = requests.get(url=url)
     data = response.json()
-    calories = data.get('calories', '')
-    steps = data.get('steps', '')
-    weight = data.get('weight', '')
-    sleep = data.get('sleep', '')
+    calories = data.get('calories', '0.00')
+    steps = data.get('steps', '0.00')
+    weight = data.get('weight', '0.00')
+    sleep = data.get('sleep', '0.00')
+    try:
+        calories = int(calories)
+        steps = int(steps)
+        weight = int(weight)
+        sleep = int(sleep)
+    except:
+        pass
     context = {"calories": calories,
                "steps": steps,
                "weight": weight,
