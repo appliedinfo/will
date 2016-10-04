@@ -87,6 +87,7 @@ class CustomPluginBot(WillPlugin):
 class Fitbot(WillPlugin):
     @respond_to("group stats")
     def group_stats(self, message):
+
         context = group_stats()
         self.say("@all Group Stats", notify=True, color='green')
         self.say(rendered_template("group_stats.html", context), notify=True,
@@ -94,6 +95,7 @@ class Fitbot(WillPlugin):
 
     @respond_to("group users")
     def group_users(self, message):
+
         response = requests.get(
             settings.FIT_BOT_URL + 'get_group_users/1/')
         data = response.json()
@@ -139,6 +141,12 @@ class Fitbot(WillPlugin):
                         subject="Here's the latest report from Fitbot",
                         message=rendered_template("group_users.html", context))
 
+    @respond_to("(?P<period>.*) leaderboard")
+    def leaderboard(self, message, period):
+        context = leaderboard(period)
+        # self.say("@all ", notify=True, color='green')
+        self.say(rendered_template("leaderboard.html", context), notify=True,
+                 color='green', html=True)
 
 def group_stats():
     url = settings.FIT_BOT_URL + 'get_stats_group/' + str(settings.FITBOT_GROUP) + '/'
@@ -159,4 +167,20 @@ def group_stats():
                "steps": steps,
                "weight": weight,
                "sleep": sleep}
+    return context
+
+def leaderboard(period):
+    """This func request the fitbot to show user leaderboard
+    """
+    url = settings.FIT_BOT_URL + 'get_leaderboard/' + str(settings.FITBOT_GROUP) + '/?period='\
+        + period
+    response = requests.get(url=url)
+    data = response.json()
+    leaderboard_list = data.get('leaderboard', [])
+
+    # [(u'nadeem@trialx.com', 79.49999999999999), 
+    # (u'faizaanwani10@gmail.com', 64.2), 
+    # (u'owais@trialx.com', 1.2)]
+
+    context = {"leaderboard_list": leaderboard_list}
     return context
