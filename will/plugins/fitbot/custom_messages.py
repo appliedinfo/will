@@ -115,11 +115,17 @@ class Fitbot(WillPlugin):
         self.say(rendered_template("group_users.html", context), message, html=True)
 
     @respond_to("^get stats (?P<mention>.*)$")
-    def get_uid(self, message, mention):
-        hipchat_user_details  = HipChatMixin().get_hipchat_user(user_id=mention)
-        sender_email = hipchat_user_details.get('email')
-        context = stats(user_name=sender_email)
-        self.say(rendered_template("group_user.html", context), message, html=True)
+    def get_uid(self, message, mention=None):
+        if mention !='@all':
+            hipchat_user_details  = HipChatMixin().get_hipchat_user(user_id=mention)
+            sender_email = hipchat_user_details.get('email')
+            context = stats(user_name=sender_email)
+            self.say(rendered_template("group_user.html", context), message, html=True)
+        else:
+            context = group_stats()
+            self.say("@all Group Stats",message, notify=True, color='green')
+            self.say(rendered_template("group_stats.html", context),message, notify=True,
+                     color='green', html=True)
 
 
     # @respond_to("^stats (?P<user_name>.*)$")
