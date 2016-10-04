@@ -1,4 +1,5 @@
 import requests
+from will.mixins import HipChatMixin
 
 __author__ = 'owais'
 from will.plugin import WillPlugin
@@ -35,7 +36,7 @@ class CustomPluginBot(WillPlugin):
     def hear_awo(self, message):
         import requests
         response = requests.get(
-            'http://awo.ainfo.io:8888/api/users/5/?range=&source=activity&project=DXAPI&user=5&_=1470393472680')
+            'http://awo.ainfo.io/api/users/5/?range=&source=activity&project=DXAPI&user=5&_=1470393472680')
         data = response.json()
         activities = data.get('activities', [])
         activity_text = ''
@@ -92,6 +93,14 @@ class Fitbot(WillPlugin):
         self.say(rendered_template("group_stats.html", context), notify=True,
                  color='green', html=True)
 
+    @respond_to("^my stats")
+    def group_stats(self, message):
+        hipchat_id = message.sender.hipchat_id
+        hipchat_user_details  = HipChatMixin().get_hipchat_user(user_id=hipchat_id)
+        sender_email = hipchat_user_details.get('email')
+        context = stats(user_name=sender_email)
+        self.say(rendered_template("group_user.html", context), message, html=True)
+
     @respond_to("group users")
     def group_users(self, message):
         response = requests.get(
@@ -105,28 +114,18 @@ class Fitbot(WillPlugin):
         # self.say(html_body, notify=True, html=True, color='random')
         self.say(rendered_template("group_users.html", context), message, html=True)
 
-    @respond_to("stats (?P<user_name>.*)$")
-    def getuser(self, message, user_name):
-        response = requests.get(
-            settings.FIT_BOT_URL + 'get_group_user/?username={0}'.format(user_name))
-        data = response.json()
-        calories = data.get('calories', '0.00')
-        steps = data.get('steps', '0.00')
-        weight = data.get('weight', '0.00')
-        sleep = data.get('sleep', '0.00')
-        try:
-            calories = int(float(calories))
-            steps = int(float(steps))
-            weight = int(float(weight))
-            sleep = int(float(sleep))
-        except Exception as e:
-            pass
-        context = {"calories": calories,
-                   "steps": steps,
-                   "weight": weight,
-                   "sleep": sleep
-                   }
+    @respond_to("^get stats (?P<mention>.*)$")
+    def get_uid(self, message, mention):
+        hipchat_user_details  = HipChatMixin().get_hipchat_user(user_id=mention)
+        sender_email = hipchat_user_details.get('email')
+        context = stats(user_name=sender_email)
         self.say(rendered_template("group_user.html", context), message, html=True)
+
+
+    # @respond_to("^stats (?P<user_name>.*)$")
+    # def getuser(self, message, user_name):
+    #     context = stats(user_name=user_name)
+    #     self.say(rendered_template("group_user.html", context), message, html=True)
 
     @respond_to("send email to (?P<email>.*)$")
     def sendemail(self, message, email):
@@ -159,4 +158,26 @@ def group_stats():
                "steps": steps,
                "weight": weight,
                "sleep": sleep}
+    return context
+
+def stats(user_name):
+    response = requests.get(
+            settings.FIT_BOT_URL + 'get_group_user/?username={0}'.format(user_name))
+    data = response.json()
+    calories = data.get('calories', '0.00')
+    steps = data.get('steps', '0.00')
+    weight = data.get('weight', '0.00')
+    sleep = data.get('sleep', '0.00')
+    try:
+        calories = int(float(calories))
+        steps = int(float(steps))
+        weight = int(float(weight))
+        sleep = int(float(sleep))
+    except Exception as e:
+        pass
+    context = {"calories": calories,
+               "steps": steps,
+               "weight": weight,
+               "sleep": sleep
+               }
     return context
