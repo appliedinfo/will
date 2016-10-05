@@ -1,28 +1,22 @@
-import requests
-from will.mixins import HipChatMixin
-
 __author__ = 'owais'
 from will.plugin import WillPlugin
-from will.decorators import respond_to, hear, periodic, rendered_template
+from will.decorators import respond_to
+from will.decorators import hear
+from will.decorators import periodic
+from will.decorators import rendered_template
 from will import settings
+from will.mixins import HipChatMixin
+import requests
 
 
 class CustomPluginBot(WillPlugin):
-    # @hear("who are you")
-    # def hear_who_are_you(self, message):
-    #     self.say("I am a Bot", message=message)
+    @hear("who are you")
+    def hear_who_are_you(self, message):
+        self.say("I am a Bot", message=message)
 
     @respond_to("who are you")
     def hear_who_are_you_wr(self, message):
         self.say("I am a Bot")
-
-    # @hear("^mahraaz$")
-    # def hear_mahraaz(self, message):
-    #     self.say("In search of Maharin ...", message=message)
-
-    # @respond_to("^mahraaz$")
-    # def hear_mahraaz_wr(self, message):
-    #     self.say("In search of Maharin ...")
 
     @hear("Are you a Bot")
     def hear_are_you(self, message):
@@ -32,28 +26,12 @@ class CustomPluginBot(WillPlugin):
     def hear_are_you_wr(self, message):
         self.say("Yes I am a Bot")
 
-    @respond_to("^awo owais activity$")
-    def hear_awo(self, message):
-        import requests
-        response = requests.get(
-            'http://awo.ainfo.io/api/users/5/?range=&source=activity&project=DXAPI&user=5&_=1470393472680')
-        data = response.json()
-        activities = data.get('activities', [])
-        activity_text = ''
-        for activity in activities:
-            activity_text += "\n"
-            activity_text += str(activity['category']) + " " + str(activity['estimated_time']) \
-                             + " " + str(activity['actual_time']) \
-                             + str(activity['project']) + " " + str(activity['task_name'])
-
-        self.say(activity_text, message=message)
-
     @periodic(hour='13', minute='00')
     def schedule_1300_message(self):
         context = group_stats()
         self.say("@all Group Stats", notify=True, color='green')
         self.say(rendered_template("group_stats.html", context), notify=True,
-             color='green', html=True)
+                 color='green', html=True)
 
     @periodic(hour='5', minute='00')
     def schedule_1400_message(self):
@@ -61,28 +39,6 @@ class CustomPluginBot(WillPlugin):
         self.say("@all Group Stats", notify=True, color='green')
         self.say(rendered_template("group_stats.html", context), notify=True,
                  color='green', html=True)
-
-    # @periodic(hour='6', minute='00', day_of_week="mon-fri")
-    # def schedule_600_message(self):
-    #     context = group_stats()
-    #     self.say("@all Group Stats 6:00", notify=True, color='green')
-    #     self.say(rendered_template("group_stats.html", context), notify=True,
-    #              color='green', html=True)
-
-
-    # @periodic(hour='12', minute='56', day_of_week="mon-fri")
-    # def schedule_1256_message(self):
-    #     context = group_stats()
-    #     self.say("@all Group Stats 12:56", notify=True, color='green')
-    #     self.say(rendered_template("group_stats.html", context), notify=True,
-    #              color='green', html=True)
-    #
-    # @periodic(hour='9', minute='45', day_of_week="mon-fri")
-    # def schedule_945_message(self):
-    #     context = group_stats()
-    #     self.say("@all Group Stats 9:45", notify=True, color='green')
-    #     self.say(rendered_template("group_stats.html", context), notify=True,
-    #              color='green', html=True)
 
 
 class Fitbot(WillPlugin):
@@ -108,10 +64,6 @@ class Fitbot(WillPlugin):
         data = response.json()
         userlist = data.get('userlist', '')
         context = {"userlist": userlist}
-
-        # card_data={"style":"application","url":"https://www.application.com/an-object","format":"medium","id":"db797a68-0aff-4ae8-83fc-2e72dbb1a707","title":"GroupStatistics","description":"GroupstaticsbasesontotalSleep\ntotalcalories","icon":{"url":"http://bit.ly/1S9Z5dF"},"attributes":[{"label":"calories","value":{"label":calories}},{"label":"steps","value":{"icon":{"url":"http://bit.ly/1S9Z5dF"},"label":steps,"style":"lozenge-complete"}},{"label":"Avgweight","value":{"icon":{"url":"http://bit.ly/1S9Z5dF"},"label":weight,"style":"lozenge-complete"}},{"label":"sleep","value":{"icon":{"url":"http://bit.ly/1S9Z5dF"},"label":sleep,"style":"lozenge-complete"}}]}
-        # self.say(message, html=True, card=json.dumps(card_data), notify=True)
-        # self.say(html_body, notify=True, html=True, color='random')
         self.say(rendered_template("group_users.html", context), message, html=True)
 
     @respond_to("^get stats (?P<mention>.*)$")
@@ -126,12 +78,6 @@ class Fitbot(WillPlugin):
             self.say("@all Group Stats",message, notify=True, color='green')
             self.say(rendered_template("group_stats.html", context),message, notify=True,
                      color='green', html=True)
-
-
-    # @respond_to("^stats (?P<user_name>.*)$")
-    # def getuser(self, message, user_name):
-    #     context = stats(user_name=user_name)
-    #     self.say(rendered_template("group_user.html", context), message, html=True)
 
     @respond_to("send email to (?P<email>.*)$")
     def sendemail(self, message, email):
