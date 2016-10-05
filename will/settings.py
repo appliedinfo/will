@@ -1,9 +1,14 @@
 import os
-from utils import show_valid, warn, note
-from clint.textui import puts, indent
 from urlparse import urlparse
 
+from clint.textui import puts, indent
+
+from utils import show_valid, warn, note
+
 SECRET_KEY = '5$y8kjxf3ioqw)!c=v78u2s0^qje5c4v!r#eq1ju8#*kc2uoed'
+
+FIT_BOT_URL = "https://fitbot.ainfo.io/"
+
 
 def import_settings(quiet=True):
     """This method takes care of importing settings from the environment, and config.py file.
@@ -17,7 +22,6 @@ def import_settings(quiet=True):
     """
 
     settings = {}
-
     # Import from environment, handle environment-specific parsing.
     for k, v in os.environ.items():
         if k[:5] == "WILL_":
@@ -29,7 +33,7 @@ def import_settings(quiet=True):
     # If HIPCHAT_SERVER is set, we need to change the USERNAME slightly
     # for XMPP to work.
     if "HIPCHAT_SERVER" in settings:
-        settings["USERNAME"] = "{user}@{host}".\
+        settings["USERNAME"] = "{user}@{host}". \
             format(user=settings["USERNAME"].split("@")[0],
                    host=settings["HIPCHAT_SERVER"])
     else:
@@ -148,9 +152,9 @@ def import_settings(quiet=True):
                 pass
             else:
                 settings["TEMPLATE_DIRS"] = []
-        if "ALLOW_INSECURE_HIPCHAT_SERVER" in settings and\
+        if "ALLOW_INSECURE_HIPCHAT_SERVER" in settings and \
                 (settings["ALLOW_INSECURE_HIPCHAT_SERVER"] is True or
-                 settings["ALLOW_INSECURE_HIPCHAT_SERVER"].lower() == "true"):
+                         settings["ALLOW_INSECURE_HIPCHAT_SERVER"].lower() == "true"):
             warn("You are choosing to run will with SSL disabled. "
                  "This is INSECURE and should NEVER be deployed outside a development environment.")
             settings["ALLOW_INSECURE_HIPCHAT_SERVER"] = True
@@ -184,4 +188,9 @@ def import_settings(quiet=True):
             globals()[k] = settings[k]
 
 
+FITBOT_GROUP = '5'
 import_settings()
+try:
+    from local_settings import *
+except:
+    pass
