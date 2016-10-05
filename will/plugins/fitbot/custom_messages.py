@@ -148,6 +148,19 @@ class Fitbot(WillPlugin):
         self.say(rendered_template("leaderboard.html", context), notify=True,
                  color='green', html=True)
 
+    @respond_to("welcome (?P<mention>[\@[a-z|A-Z]+])")
+    def mentions(self, message, mention):
+        # context = leaderboard(period)
+        print "*"*100
+        print "/n"
+        print message, mention
+        print "/n"
+        print "*"*100
+
+        # self.say("@all ", notify=True, color='green')
+        self.say(rendered_template("leaderboard.html", context), notify=True,
+                 color='green', html=True)
+
 def group_stats():
     url = settings.FIT_BOT_URL + 'get_stats_group/' + str(settings.FITBOT_GROUP) + '/'
     response = requests.get(url=url)

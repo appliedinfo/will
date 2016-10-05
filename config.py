@@ -95,8 +95,8 @@ HTTPSERVER_PORT = "9000"
 
 # The room will will talk to if the trigger is a webhook and he isn't told a specific room.
 # Default is the first of ROOMS.
-# DEFAULT_ROOM = 'DailyStandup'
-DEFAULT_ROOM = 'AW'
+DEFAULT_ROOM = 'DailyStandup'
+# DEFAULT_ROOM = 'AW'
 
 
 # Fully-qualified folders to look for templates in, beyond the two that
