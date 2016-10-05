@@ -95,22 +95,8 @@ class Fitbot(WillPlugin):
     @respond_to("(?P<period>.*) leaderboard")
     def leaderboard(self, message, period):
         context = leaderboard(period)
-        # self.say("@all ", notify=True, color='green')
-        self.say(rendered_template("leaderboard.html", context), notify=True,
-                 color='green', html=True)
+        self.say(rendered_template("leaderboard.html", context), message, notify=True, color='green', html=True)
 
-    @respond_to("welcome (?P<mention>[\@[a-z|A-Z]+])")
-    def mentions(self, message, mention):
-        # context = leaderboard(period)
-        print "*"*100
-        print "/n"
-        print message, mention
-        print "/n"
-        print "*"*100
-
-        # self.say("@all ", notify=True, color='green')
-        self.say(rendered_template("leaderboard.html", context), notify=True,
-                 color='green', html=True)
 
 def group_stats():
     url = settings.FIT_BOT_URL + 'get_stats_group/' + str(settings.FITBOT_GROUP) + '/'
@@ -141,12 +127,12 @@ def leaderboard(period):
     response = requests.get(url=url)
     data = response.json()
     leaderboard_list = data.get('leaderboard', [])
-
-    # [(u'nadeem@trialx.com', 79.49999999999999), 
-    # (u'faizaanwani10@gmail.com', 64.2), 
+    # [(u'nadeem@trialx.com', 79.49999999999999),
+    # (u'faizaanwani10@gmail.com', 64.2),
     # (u'owais@trialx.com', 1.2)]
-
-    context = {"leaderboard_list": leaderboard_list}
+    rounded_data_list = [[item[0], round(item[1], 1)] for item in leaderboard_list]
+    context = {"leaderboard_list": rounded_data_list}
+    return context
 
 def stats(user_name):
     response = requests.get(
@@ -168,3 +154,4 @@ def stats(user_name):
                "weight": weight,
                "sleep": sleep
                }
+    return context
