@@ -146,3 +146,7 @@ LOGLEVEL = "DEBUG"
 # PROXY_URL = "http://user:pass@corpproxy.example.com:3128"
 # or
 # PROXY_URL = "http://yproxy:80
+try:
+    from will.local_settings import DEFAULT_ROOM
+except:
+    pass
